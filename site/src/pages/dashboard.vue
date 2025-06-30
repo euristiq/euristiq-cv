@@ -4,7 +4,7 @@
 
     <div class="workspace max-w-310 mx-auto" flex="~ col" p="x-4 y-8">
       <div class="px-2 space-y-2" md="hstack justify-between">
-        <h1 font-bold text-3xl>{{ $t("dashboard.my_resumes") }}</h1>
+        <h1 font-bold text-3xl><UserAvatar /> {{ $t("dashboard.my_resumes") }}</h1>
         <DashboardFile @update="refresh" />
       </div>
 
@@ -33,6 +33,10 @@
 
 <script lang="ts" setup>
 import type { DbResume } from "~/utils/storage";
+import UserAvatar from "~/components/shared/UserAvatar.vue";
+import { useAuth } from "~/composables/useAuth";
+
+const { user, isLoggedIn } = useAuth();
 
 const {
   data: resumes,

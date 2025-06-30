@@ -13,18 +13,33 @@
           {{ $t("landing.desc") }}
         </div>
 
-        <UiButton
-          :as="NuxtLink"
-          :to="$nuxt.$localePath('/dashboard')"
-          class="text-base h-11"
-        >
-          {{ $t("landing.start") }}
-        </UiButton>
+        <ClientOnly>
+          <GoogleLogin
+            :callback="onGoogleSuccess"
+            :error="onGoogleError"
+            prompt
+            auto-login
+          />
+        </ClientOnly>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NuxtLink } from "#components";
+import { decodeCredential, GoogleLogin } from "vue3-google-login";
+import { useRouter } from "vue-router";
+import { useAuth } from "~/composables/useAuth";
+
+const router = useRouter();
+const { user } = useAuth();
+
+function onGoogleSuccess(response) {
+  user.value = decodeCredential(response.credential);
+  router.push("/dashboard");
+}
+
+function onGoogleError(error) {
+  console.error("Google login error:", error);
+}
 </script>
