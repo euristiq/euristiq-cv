@@ -12,7 +12,6 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxtjs/color-mode",
     "@vite-pwa/nuxt",
-    "nuxt-simple-sitemap",
     "radix-vue/nuxt",
     "shadcn-nuxt"
   ],
@@ -32,7 +31,8 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      googleFontsKey: ""
+      googleFontsKey: "",
+      googleClientId: process.env.GOOGLE_CLIENT_ID || ""
     }
   },
 
@@ -56,10 +56,6 @@ export default defineNuxtConfig({
         { property: "og:type", content: "website" }
       ]
     }
-  },
-
-  site: {
-    url: "https://ohmycv.app"
   },
 
   pwa,
