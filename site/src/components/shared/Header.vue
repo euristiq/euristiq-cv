@@ -1,6 +1,6 @@
 <template>
   <header class="hstack justify-between pl-4 pr-1">
-    <nuxt-link class="hstack gap-x-2" :to="$nuxt.$localePath('/')">
+    <nuxt-link class="hstack gap-x-2" :to="$nuxt.$localePath('/dashboard')">
       <SharedLogo text-base />
       <div text-lg><SharedBrandName /></div>
     </nuxt-link>
@@ -53,6 +53,8 @@
 
       <SharedToggleDark />
 
+      <LogoutButton />
+
       <UiButton
         v-if="false"
         as="a"
@@ -70,6 +72,7 @@
 
 <script lang="ts" setup>
 import { NuxtLink } from "#components";
+import LogoutButton from "~/components/shared/LogoutButton.vue";
 
 const switchLocalePath = useSwitchLocalePath();
 const { locale, locales } = useI18n();

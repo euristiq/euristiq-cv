@@ -12,10 +12,22 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@nuxtjs/color-mode",
     "@vite-pwa/nuxt",
+    "@sidebase/nuxt-auth",
     "nuxt-simple-sitemap",
     "radix-vue/nuxt",
     "shadcn-nuxt"
   ],
+
+  auth: {
+    // Use the Auth.js provider, defaulting directly to Google
+    provider: {
+      type: "authjs",
+      defaultProvider: "google",
+      addDefaultCallbackUrl: true
+    },
+    // Protect every route by default
+    globalAppMiddleware: true
+  },
 
   css: [
     "@unocss/reset/tailwind.css",
@@ -33,7 +45,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       googleFontsKey: ""
-    }
+    },
+    authSecret: process.env.NUXT_AUTH_SECRET,
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
   },
 
   colorMode: {
