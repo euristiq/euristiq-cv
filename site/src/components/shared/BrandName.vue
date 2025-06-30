@@ -1,1 +1,1 @@
-<template>Oh<span text-primary>My</span>CV</template>
+<template>Euristiq <span text-primary>CV</span></template>

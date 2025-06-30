@@ -7,6 +7,7 @@
 
     <SharedUiSlider
       unit="px"
+      :disabled="disabled"
       :model-value="vModelValue"
       @update:model-value="
         (value) => {
@@ -23,6 +24,7 @@
 
     <SharedUiSlider
       unit="px"
+      :disabled="disabled"
       :model-value="hModelValue"
       @update:model-value="
         (value) => {
@@ -35,6 +37,12 @@
 </template>
 
 <script lang="ts" setup>
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+});
 const { styles, setStyle } = useStyleStore();
 
 const vModelValue = ref([styles.marginV]);

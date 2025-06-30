@@ -7,20 +7,13 @@ export const useConstant = () => {
   const FONT = {
     LOCAL: {
       EN: V.LOCAL_EN_FONTS,
-      CJK: V.LOCAL_CJK_FONTS,
       includes: (font: Font) => {
         const check = (list: Font[]) =>
           list.some(
             (item) => (item.fontFamily ?? item.name) === (font.fontFamily ?? font.name)
           );
-        return check(V.LOCAL_EN_FONTS) || check(V.LOCAL_CJK_FONTS);
+        return check(V.LOCAL_EN_FONTS);
       }
-    },
-    GF: {
-      CJK_SUBSETS: V.GF_CJK_SUBSETS,
-      CJK_FAMILY_TO_NAME: V.GF_CJK_FAMILY_TO_NAME,
-      CJK_FIRST: V.GF_CJK_FIRST,
-      IGNORE: V.GF_IGNORE_FONTS
     }
   };
 

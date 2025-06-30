@@ -1,4 +1,4 @@
-# Oh My CV!
+# Euristiq CV!
 
 Microsoft Word and LaTeX are too overkill for a resume.
 

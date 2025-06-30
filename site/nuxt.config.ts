@@ -49,8 +49,8 @@ export default defineNuxtConfig({
       ],
       meta: [
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { name: "application-name", content: "Oh My CV!" },
-        { name: "apple-mobile-web-app-title", content: "Oh My CV!" },
+        { name: "application-name", content: "Euristiq CV!" },
+        { name: "apple-mobile-web-app-title", content: "Euristiq CV!" },
         { name: "msapplication-TileColor", content: "#fff" },
         { property: "og:url", content: "https://ohmycv.app" },
         { property: "og:type", content: "website" }
@@ -62,5 +62,26 @@ export default defineNuxtConfig({
     url: "https://ohmycv.app"
   },
 
-  pwa
+  pwa,
+
+  vite: {
+    resolve: {
+      alias: {
+        "@ohmycv/case-police": "../packages/case-police/src/index.ts",
+        "@ohmycv/dynamic-css": "../packages/dynamic-css/src/index.ts",
+        "@ohmycv/front-matter": "../packages/front-matter/src/index.ts",
+        "@ohmycv/google-fonts-loader": "../packages/google-fonts-loader/src/index.ts",
+        "@ohmycv/markdown-it-cross-ref": "../packages/markdown-it-cross-ref/src/index.ts",
+        "@ohmycv/markdown-it-katex": "../packages/markdown-it-katex/src/index.ts",
+        "@ohmycv/markdown-it-latex-cmds":
+          "../packages/markdown-it-latex-cmds/src/index.ts",
+        "@renovamen/utils": "../packages/utils/src/index.ts",
+        "@ohmycv/vue-shortcuts": "../packages/vue-shortcuts/src/index.ts",
+        "@ohmycv/vue-smart-pages": "../packages/vue-smart-pages/src/index.ts",
+        "@ohmycv/vue-zoom": "../packages/vue-zoom/src/index.ts"
+      }
+    }
+  },
+
+  compatibilityDate: "2025-06-18"
 });

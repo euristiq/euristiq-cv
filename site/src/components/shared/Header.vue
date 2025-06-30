@@ -7,6 +7,7 @@
 
     <div class="hstack">
       <UiButton
+        v-if="false"
         :as="NuxtLink"
         :to="$nuxt.$localePath('/dashboard')"
         variant="ghost-secondary"
@@ -23,6 +24,7 @@
       <UiDropdownMenu>
         <UiDropdownMenuTrigger as-child>
           <UiButton
+            v-if="false"
             variant="ghost-secondary"
             size="xs"
             class="h-8 gap-x-1"
@@ -52,6 +54,7 @@
       <SharedToggleDark />
 
       <UiButton
+        v-if="false"
         as="a"
         variant="ghost-secondary"
         size="round"

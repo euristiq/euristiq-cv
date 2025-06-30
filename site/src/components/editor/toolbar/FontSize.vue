@@ -5,6 +5,7 @@
       :model-value="modelValue"
       :min="12"
       :max="20"
+      :disabled="disabled"
       @update:model-value="
         (value) => {
           modelValue = value!;
@@ -16,6 +17,12 @@
 </template>
 
 <script lang="ts" setup>
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+});
 const { styles, setStyle } = useStyleStore();
 
 const modelValue = ref([styles.fontSize]);

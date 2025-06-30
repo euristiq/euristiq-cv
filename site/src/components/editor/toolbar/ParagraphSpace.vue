@@ -7,6 +7,7 @@
       unit="px"
       :model-value="modelValue"
       :max="50"
+      :disabled="disabled"
       @update:model-value="
         (value) => {
           modelValue = value!;
@@ -18,6 +19,12 @@
 </template>
 
 <script lang="ts" setup>
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+});
 const { styles, setStyle } = useStyleStore();
 
 const modelValue = ref([styles.paragraphSpace]);

@@ -67,7 +67,7 @@ export default defineConfig({
     presetShadcn(
       {
         color: {
-          base: "orange",
+          base: "violet",
           light: {
             background: "0 0% 100%",
             foreground: "215 25% 27%",

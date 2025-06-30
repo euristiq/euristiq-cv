@@ -7,7 +7,6 @@ export type ResumeStyles = {
   lineHeight: number;
   paragraphSpace: number;
   themeColor: string;
-  fontCJK: Font;
   fontEN: Font;
   fontSize: number;
   paper: ValidPaperSize;
@@ -22,7 +21,7 @@ export const useStyleStore = defineStore("style", () => {
     value: ResumeStyles[T]
   ) => {
     // handle Google fonts
-    if (["fontCJK", "fontEN"].includes(key)) {
+    if (["fontEN"].includes(key)) {
       await googleFontsService.resolve(value as Font);
     }
 

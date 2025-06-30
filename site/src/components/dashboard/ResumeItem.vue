@@ -58,7 +58,6 @@ onMounted(async () => {
   dynamicCssService.injectCssEditor(props.resume.css, props.resume.id);
   // load Google fonts
   await googleFontsService.resolve(props.resume.styles.fontEN);
-  await googleFontsService.resolve(props.resume.styles.fontCJK);
   // set styles that are defined via toolbar
   dynamicCssService.injectToolbar(props.resume.styles, props.resume.id);
   // force update resume render

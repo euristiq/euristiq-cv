@@ -10,6 +10,7 @@
         :key="`${i}-${color}`"
         class="size-6 flex-center rounded text-white ring-when-focus"
         :style="{ backgroundColor: color }"
+        :disabled="disabled"
         @click="api.setValue(color)"
       >
         <span v-show="toHex(api.value) === color.toUpperCase()" i-line-md:confirm />
@@ -34,6 +35,7 @@
         <input
           v-bind="api.getChannelInputProps({ channel: 'hex' })"
           class="bg-transparent outline-none"
+          :disabled="disabled"
         />
       </div>
 
@@ -59,6 +61,7 @@
               variant="ghost"
               size="icon"
               class="size-7 rounded"
+              :disabled="disabled"
             >
               <span i-bx:bxs-eyedropper text-lg />
             </UiButton>
@@ -84,6 +87,12 @@
 </template>
 
 <script lang="ts" setup>
+defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+});
 import * as colorPicker from "@zag-js/color-picker";
 import { normalizeProps, useMachine } from "@zag-js/vue";
 

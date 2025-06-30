@@ -15,12 +15,6 @@ export const i18n: NuxtI18nOptions = {
       name: "Spanish",
       icon: "i-material-symbols:language-spanish",
       file: "sp.yaml"
-    },
-    {
-      code: "zh-cn",
-      name: "简体中文",
-      icon: "i-icon-park-outline:chinese",
-      file: "zh-cn.yaml"
     }
   ],
   langDir: "i18n",

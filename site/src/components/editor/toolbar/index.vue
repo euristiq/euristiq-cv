@@ -6,7 +6,11 @@
       lt-lg="bg-accent rounded-none"
     >
       <template v-for="(tool, i) in tools" :key="tool.id">
-        <component :is="tool.component" :id="`toolbar-${tool.id}`" />
+        <component
+          :disabled="tool.disabled"
+          :is="tool.component"
+          :id="`toolbar-${tool.id}`"
+        />
         <UiSeparator v-if="i < tools.length - 1" class="w-[calc(100%-32px)] mx-auto" />
       </template>
     </div>
@@ -52,47 +56,55 @@ const tools = [
   {
     id: "file",
     icon: "i-carbon:import-export",
-    component: EditorToolbarFile
+    component: EditorToolbarFile,
+    disabled: true
   },
-  {
-    id: "paper_size",
-    icon: "i-majesticons:paper-fold-line",
-    component: EditorToolbarPaper
-  },
+  // {
+  //   id: "paper_size",
+  //   icon: "i-majesticons:paper-fold-line",
+  //   component: EditorToolbarPaper,
+  //   disabled: true
+  // },
   {
     id: "theme_color",
     icon: "i-material-symbols:palette-outline",
-    component: EditorToolbarThemeColor
+    component: EditorToolbarThemeColor,
+    disabled: true
   },
-  {
-    id: "font_family",
-    icon: "i-material-symbols:font-download-outline",
-    component: EditorToolbarFontFamily
-  },
+  // {
+  //   id: "font_family",
+  //   icon: "i-material-symbols:font-download-outline",
+  //   component: EditorToolbarFontFamily
+  // },
   {
     id: "font_size",
     icon: "i-ri:font-size-2",
-    component: EditorToolbarFontSize
+    component: EditorToolbarFontSize,
+    disabled: true
   },
   {
     id: "margins",
     icon: "i-radix-icons:margin",
-    component: EditorToolbarMargins
+    component: EditorToolbarMargins,
+    disabled: true
   },
   {
     id: "paragraph_spacing",
     icon: "i-icon-park-outline:paragraph-break-two",
-    component: EditorToolbarParagraphSpace
+    component: EditorToolbarParagraphSpace,
+    disabled: true
   },
   {
     id: "line_height",
     icon: "i-ic:round-format-line-spacing",
-    component: EditorToolbarLineHeight
+    component: EditorToolbarLineHeight,
+    disabled: true
   },
   {
     id: "correct_case",
     icon: "i-icon-park-outline:check-correct",
-    component: EditorToolbarCorrectCase
+    component: EditorToolbarCorrectCase,
+    disabled: false
   }
 ];
 

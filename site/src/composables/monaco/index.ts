@@ -54,6 +54,7 @@ export const useMonaco = () => {
 
   const activateModel = (model: "markdown" | "css") => {
     states.value?.editor.setModel(states.value[model].get());
+    states.value?.editor.updateOptions({ readOnly: model === "css" });
   };
 
   const setContent = (model: "markdown" | "css", content: string) => {

@@ -44,7 +44,6 @@ watchThrottled(
     props.styles.paragraphSpace,
     props.styles.fontSize,
     props.css,
-    props.styles.fontCJK,
     props.styles.fontEN
   ],
   render,
