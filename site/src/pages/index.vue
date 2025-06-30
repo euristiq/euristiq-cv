@@ -27,4 +27,8 @@
 
 <script setup lang="ts">
 import { NuxtLink } from "#components";
+const router = useRouter();
+const localePath = useLocalePath();
+
+router.push(localePath(`/dashboard`));
 </script>
