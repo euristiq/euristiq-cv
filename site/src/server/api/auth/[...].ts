@@ -8,7 +8,7 @@ export default NuxtAuthHandler({
   providers: [
     // @ts-expect-error For SSR compatibility
     GoogleProvider.default({
-      clientId: useRuntimeConfig().googleClientId,
+      clientId: useRuntimeConfig().public.googleClientId,
       clientSecret: useRuntimeConfig().googleClientSecret,
       authorization: {
         params: {

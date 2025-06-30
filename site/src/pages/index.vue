@@ -27,8 +27,8 @@
 
 <script setup lang="ts">
 import { NuxtLink } from "#components";
-const router = useRouter();
-const localePath = useLocalePath();
-
-router.push(localePath(`/dashboard`));
+definePageMeta({
+  // disable the global auth guard on the home page
+  auth: false
+});
 </script>

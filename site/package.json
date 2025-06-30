@@ -3,7 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "nuxt generate",
+    "build": "nuxt build",
+    "start": "nuxt start",
     "dev": "nuxt dev",
     "serve": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -45,7 +46,6 @@
     "monaco-editor": "^0.50.0",
     "next-auth": "4.21.1",
     "nuxt": "^3.12.3",
-    "nuxt-simple-sitemap": "^4.4.1",
     "pinia": "^2.1.7",
     "radix-vue": "^1.9.0",
     "shadcn-nuxt": "^0.10.4",

@@ -13,12 +13,23 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@vite-pwa/nuxt",
     "@sidebase/nuxt-auth",
-    "nuxt-simple-sitemap",
     "radix-vue/nuxt",
     "shadcn-nuxt"
   ],
+  //
+  // nitro: {
+  //   // avoid the auth-redirect / 404 spam by only prerendering exactly these
+  //   prerender: {
+  //     crawlLinks: false,
+  //     routes: ["/", "/dashboard"]
+  //   },
+  //   // ensure Unenv always sees an array here (never `undefined`)
+  //   unenv: []
+  // },
 
   auth: {
+    baseURL: "http://localhost:3000/api/auth/",
+    disableServerSideAuth: true,
     // Use the Auth.js provider, defaulting directly to Google
     provider: {
       type: "authjs",
@@ -27,6 +38,10 @@ export default defineNuxtConfig({
     },
     // Protect every route by default
     globalAppMiddleware: true
+  },
+
+  routeRules: {
+    "/api/**": { prerender: false }
   },
 
   css: [
@@ -44,11 +59,11 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      googleFontsKey: ""
+      googleFontsKey: "",
+      googleClientId: process.env.GOOGLE_CLIENT_ID || ""
     },
-    authSecret: process.env.NUXT_AUTH_SECRET,
-    googleClientId: process.env.GOOGLE_CLIENT_ID,
-    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
+    authSecret: process.env.NUXT_AUTH_SECRET || "",
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
   },
 
   colorMode: {
@@ -73,9 +88,9 @@ export default defineNuxtConfig({
     }
   },
 
-  site: {
-    url: "https://ohmycv.app"
-  },
+  // site: {
+  //   url: "https://cv.euristiq.dev"
+  // },
 
   pwa,
 
