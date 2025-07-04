@@ -14,16 +14,16 @@
 import { Button } from "~/components/ui/button";
 import { LogOut as LogOutIcon } from "lucide-vue-next";
 import { googleLogout } from "vue3-google-login";
-import { useAuth } from "~/composables/useAuth";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
+import { useUserStore } from "~/stores/users";
 
 const route = useRoute();
 const router = useRouter();
-const { user } = useAuth();
+const userStore = useUserStore();
 
 const handleLogout = () => {
-  user.value = null;
+  userStore.logout();
   googleLogout();
   router.push("/");
 };

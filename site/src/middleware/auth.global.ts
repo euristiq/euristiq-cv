@@ -1,14 +1,14 @@
 import { defineNuxtRouteMiddleware, navigateTo } from "#app";
-import { useAuth } from "~/composables/useAuth";
+import { useUserStore } from "~/stores/users";
 
 export default defineNuxtRouteMiddleware((to) => {
-  const { user } = useAuth();
+  const userStore = useUserStore();
 
   if (to.path === "/") {
     return;
   }
 
-  if (!user.value) {
+  if (!userStore.isAuthenticated) {
     // 3. If no user, redirect back to home
     return navigateTo("/");
   }

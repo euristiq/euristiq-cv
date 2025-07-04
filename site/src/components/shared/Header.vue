@@ -2,7 +2,11 @@
   <header class="hstack justify-between pl-4 pr-1">
     <nuxt-link
       class="hstack gap-x-2"
-      :to="isLoggedIn ? $nuxt.$localePath('/dashboard') : $nuxt.$localePath('/')"
+      :to="
+        useUserStore().isAuthenticated
+          ? $nuxt.$localePath('/dashboard')
+          : $nuxt.$localePath('/')
+      "
     >
       <SharedLogo text-base />
       <div text-lg><SharedBrandName /></div>
@@ -75,11 +79,10 @@
 <script lang="ts" setup>
 import { NuxtLink } from "#components";
 import LogoutButton from "~/components/shared/LogoutButton.vue";
-import { useAuth } from "~/composables/useAuth";
+import { useUserStore } from "~/stores/users";
 
 const switchLocalePath = useSwitchLocalePath();
 const { locale, locales } = useI18n();
-const { isLoggedIn } = useAuth();
 
 const availableLocales = computed(() =>
   locales.value.filter((i) => i.code !== locale.value)

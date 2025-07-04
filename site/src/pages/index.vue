@@ -14,12 +14,7 @@
         </div>
 
         <ClientOnly>
-          <GoogleLogin
-            :callback="onGoogleSuccess"
-            :error="onGoogleError"
-            prompt
-            auto-login
-          />
+          <GoogleLogin :callback="onGoogleSuccess" :error="onGoogleError" />
         </ClientOnly>
       </div>
     </div>
@@ -29,13 +24,14 @@
 <script setup lang="ts">
 import { decodeCredential, GoogleLogin } from "vue3-google-login";
 import { useRouter } from "vue-router";
-import { useAuth } from "~/composables/useAuth";
 
 const router = useRouter();
-const { user } = useAuth();
+const userStore = useUserStore();
 
 function onGoogleSuccess(response) {
-  user.value = decodeCredential(response.credential);
+  const decodedCredential = decodeCredential(response.credential);
+  console.log("decodedCredential", decodedCredential);
+  userStore.setUser(decodedCredential as UserInfo);
   router.push("/dashboard");
 }
 

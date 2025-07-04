@@ -34,9 +34,6 @@
 <script lang="ts" setup>
 import type { DbResume } from "~/utils/storage";
 import UserAvatar from "~/components/shared/UserAvatar.vue";
-import { useAuth } from "~/composables/useAuth";
-
-const { user, isLoggedIn } = useAuth();
 
 const {
   data: resumes,

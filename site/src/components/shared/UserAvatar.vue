@@ -1,9 +1,12 @@
 <template>
-  <span v-if="isLoggedIn" class="inline-flex items-center mr-2 align-middle">
+  <span
+    v-if="userStore?.isAuthenticated"
+    class="inline-flex items-center mr-2 align-middle"
+  >
     <img
-      v-if="user?.picture"
-      :src="user.picture"
-      :alt="user.name || 'User avatar'"
+      v-if="userStore?.user?.picture"
+      :src="userStore?.user?.picture"
+      :alt="userStore?.user?.name || 'User avatar'"
       class="h-10 w-10 rounded-full object-cover"
     />
     <div
@@ -17,15 +20,12 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useAuth } from "~/composables/useAuth";
+import { useUserStore } from "~/stores/users";
 
-const { user, isLoggedIn } = useAuth();
-
-console.log(isLoggedIn);
-console.log(user);
+const userStore = useUserStore();
 
 const initials = computed(() => {
-  const name = user?.name || "";
+  const name = userStore?.user?.name || "";
   return name
     .split(" ")
     .filter(Boolean)
