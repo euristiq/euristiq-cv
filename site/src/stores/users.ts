@@ -30,7 +30,7 @@ export const useUserStore = defineStore("user", {
   }),
 
   actions: {
-    setUser(userData: UserInfo) {
+    login(userData: UserInfo) {
       this.user = userData;
       this.isAuthenticated = true;
     },

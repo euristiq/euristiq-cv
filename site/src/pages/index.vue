@@ -31,11 +31,18 @@ const userStore = useUserStore();
 function onGoogleSuccess(response) {
   const decodedCredential = decodeCredential(response.credential);
   console.log("decodedCredential", decodedCredential);
-  userStore.setUser(decodedCredential as UserInfo);
+  const userInfo = decodedCredential as UserInfo;
+  userStore.login(userInfo);
   router.push("/dashboard");
 }
 
 function onGoogleError(error) {
   console.error("Google login error:", error);
 }
+
+onMounted(() => {
+  if (userStore.isAuthenticatedUser) {
+    router.push("/dashboard");
+  }
+});
 </script>
