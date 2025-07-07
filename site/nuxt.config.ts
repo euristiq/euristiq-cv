@@ -32,7 +32,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       googleFontsKey: "",
-      googleClientId: process.env.GOOGLE_CLIENT_ID || ""
+      googleClientId: process.env.GOOGLE_CLIENT_ID || "",
+      adminEmails: process.env.ADMIN_EMAILS?.split(",") || [""]
     }
   },
 

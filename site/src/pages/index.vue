@@ -14,12 +14,7 @@
         </div>
 
         <ClientOnly>
-          <GoogleLogin
-            :callback="onGoogleSuccess"
-            :error="onGoogleError"
-            auto-login
-            prompt
-          />
+          <GoogleLogin :callback="onGoogleSuccess" :error="onGoogleError" prompt />
         </ClientOnly>
       </div>
     </div>

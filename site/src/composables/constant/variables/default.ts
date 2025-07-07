@@ -2,15 +2,15 @@ import { PREVIEW_SELECTOR } from "./render";
 import type { ResumeStyles } from "../../stores/style";
 
 export const DEFAULT_STYLES = {
-  marginV: 50,
-  marginH: 45,
-  lineHeight: 1.3,
+  marginV: 45,
+  marginH: 50,
+  lineHeight: 1.25,
   paragraphSpace: 5,
-  themeColor: "#8737b5",
+  themeColor: "#9c5bde",
   fontEN: {
-    name: "Arial"
+    name: "Open Sans"
   },
-  fontSize: 15,
+  fontSize: 12,
   paper: "A4"
 } as ResumeStyles;
 

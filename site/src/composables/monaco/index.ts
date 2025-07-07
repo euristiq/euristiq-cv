@@ -1,6 +1,6 @@
 import { isClient } from "@renovamen/utils";
 import type * as Monaco from "monaco-editor";
-import { setupMonacoModel, setupMonacoEditor, type MonacoModel } from "./setup";
+import { type MonacoModel, setupMonacoEditor, setupMonacoModel } from "./setup";
 
 type MonacoStates = {
   editor: Monaco.editor.IStandaloneCodeEditor;
@@ -53,8 +53,11 @@ export const useMonaco = () => {
   };
 
   const activateModel = (model: "markdown" | "css") => {
+    const { isAdmin } = useUserStore();
     states.value?.editor.setModel(states.value[model].get());
-    states.value?.editor.updateOptions({ readOnly: model === "css" });
+    states.value?.editor.updateOptions({
+      readOnly: model === "css" && !isAdmin
+    });
   };
 
   const setContent = (model: "markdown" | "css", content: string) => {
