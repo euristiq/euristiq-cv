@@ -19,11 +19,11 @@
         variant="ghost-secondary"
         size="xs"
         class="h-8 gap-x-1"
-        :aria-label="$t('dashboard.dashboard')"
+        :aria-label="$t('dashboard.all_resumes')"
       >
         <span class="i-ep:menu text-lg" />
         <span class="hide-on-mobile text-base">
-          {{ $t("dashboard.dashboard") }}
+          {{ $t("dashboard.all_resumes") }}
         </span>
       </UiButton>
 
