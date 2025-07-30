@@ -2,13 +2,13 @@ import { PREVIEW_SELECTOR } from "./render";
 import type { ResumeStyles } from "../../stores/style";
 
 export const DEFAULT_STYLES = {
-  marginV: 45,
-  marginH: 50,
+  marginV: 40,
+  marginH: 45,
   lineHeight: 1.25,
   paragraphSpace: 5,
-  themeColor: "#9c5bde",
+  themeColor: "#6A31D2",
   fontEN: {
-    name: "Open Sans"
+    name: "Open Sans Regular"
   },
   fontSize: 12,
   paper: "A4"
@@ -18,69 +18,100 @@ export const DEFAULT_MD_CONTENT = `---
 name: John Doe
 header:
   - text: |
-      Senior Software Egineer
+      Senior Software Engineer
   - text: euristiq
     link: https://euristiq.com
   - text: <span class="iconify" data-icon="tabler:mail"></span> hello@euristiq.com
     link: mailto:hello@euristiq.com
 ---
 
-Experienced software engineer specializing in backend development, cloud architecture, and Infrastructure as Code. Expert in Python and Node.js, with hands-on experience in Django, Flask, and React. Skilled in deploying scalable, maintainable systems on AWS and Azure using Docker, Kubernetes, and Terraform. Strong focus on automation, performance optimization, and cloud-native design.
+Experienced backend developer with over seven years of expertise designing and delivering scalable, secure server-side applications. Specializes in modern Java and Kotlin, cloud-native development, and security-first engineering practices. Skilled in integrating third-party services and APIs within distributed, event-driven systems. Architects robust microservices using Domain-Driven Design, CQRS, and Event Sourcing, supported by automated CI/CD pipelines and infrastructure as code. A strong communicator and proactive learner dedicated to driving innovation and contributing to team success.
 
-
-## Skills
-
-**Programming Languages:** Python, JavaScript
-
-**Tools and Frameworks:** GrillHub, PanFlow, TensorFork, SpiceNet, $\\LaTeX$
-
-**Certifications:** AWS Solutions Architect - Professional, Something Else
+## Expertise
+|                                            |                                                                                                                |
+|--------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| **Programming&nbsp;Languages:**            | Java, Kotlin, Python                                                                                           |
+| **Data&nbsp;Stores:**                      | PostgreSQL, Redis, Cassandra, TimeScaleDB                                                                      |
+| **AWS&nbsp;Cloud:**                        | RDS, ECS, SQS, DynamoDB, Kinesis, IoT Core, Cognito, Lambda, API Gateway, ElastiCache, S3, CloudFormation, CDK |
+| **Azure&nbsp;/&nbsp;Other&nbsp;Cloud:**    | AKS, CosmosDB, Service Bus, Event Bus                                                                          |
+| **Architecture&nbsp;&amp;&nbsp;Patterns:** | DDD, CQRS, Event Sourcing, Micro‑services, GraphQL                                                             |
+| **Messaging&nbsp;&amp;&nbsp;Streaming:**   | Kafka, RabbitMQ, ActiveMQ, MQTT                                                                                |
+| **IoT&nbsp;&amp;&nbsp;Protocols:**         | MQTT, LwM2M&nbsp;/&nbsp;CoAP, LoRaWAN, ZigBee                                                                  |
+| **Tools:**                                 | Docker, Kubernetes, Terraform, JMeter, Spring Boot/Framework                                                   |
+| **Certification:**                         | AWS Certified Solutions Architect– Associate                                                                   |
 
 ## Experience
 
-**Cooking Engineer Intern**, Microwavesoft
-  ~ 07/2021 - Present
+**VMS:** Senior Software Engineer
+  ~ **12/2023 - 04/2025**
 
-[TODO: Project description goes here]
+Built a scalable vendor-management platform with SharePoint-based document collaboration.
 
-- Developed an innovative, versatile cooking methodology applicable across diverse ingredients, incorporating and improving upon recent culinary trends
-- Created a streamlined cream of mushroom soup recipe, achieving results comparable to complex state-of-the-art techniques through a novel mushroom-cutting approach; published in NIPS 2099 (see [~P1])
-- Designed a specialized cooking pan that enhanced research efficiency for team members
+Extended core process-automation engine, enabling configurable customer workflows. Implemented custom-field and flexible import/export modules.
 
-**Tech stack:** A, B, C
+**Achievements:**
+- Delivered financial reporting pipeline integrated with Power BI → 40 % faster insights
+- Introduced worker-budget feature reducing hiring-manager effort by 15 %.
 
+**Tech stack:** Kotlin, Spring Framework, PostgreSQL, ActiveM, Kafka, AWS S3, ABAC
 
-**Engineering Chef Intern**, Berkebake
-  ~ 08/2020 - 07/2021
+**IoT (Agricultural Farm Management):** Senior Software Engineer
+  ~ **10/2022 - 12/2023**
 
-[TODO: Project description goes here]
+Discovered and documented migration path from GCP to AWS. Designed IoT-ready architecture with FOTA for farm equipment. Migrated Java EE monolith to Spring Boot in under a week 35 % performance boost.
 
-- Developed a precise mapo tofu quality assessment technique using thermometer-based measurements
-- Invented a rapid stir-frying algorithm for tofu cooking, replacing vague instructions like "add as much as you can" with specific hot sauce measurements; published in CVPR 2077 (see [~P2])
-- Outperformed SOTA cooking methods in both efficiency and quality across experiments with popular tofu types
+**Achievements:**
+- Reduced application load time by 15% by optimizing database queries and implementing caching
+- Created a CI/CD pipeline that automated the deployment process, reducing deployment time by 50%
 
-**Tech stack:** A, B, C
+**Tech stack:** Java, Spring Framework, AWS Cognito, ECS, RDS, S3, SES, SQS, DynamoDB, IoT
 
-## Awards and Honors
+**IoT (Smart Fitness):** Senior Software Engineer
+  ~ **01/2022 - 09/2022, 09/2023 - 12/2023**
 
-**Gold**, International Collegiate Catching Fish Contest (ICCFC)
-  ~ 2018
+Designed backend to aggregate and analyse sensor data & heart-rate-zone metrics. Deployed complete AWS infrastructure and provided production support.
 
-**First Prize**, China National Scholarship for Outstanding Dragon Killers
-  ~ 2017, 2018
+**Achievements:** Real-time session analytics grew user base to ~100 k in first year
+
+**Tech stack:** Java, Docker, Spring Framework, AWS Cognito, ECS, RDS, S3, SES, SQS, DynamoDB
+
+**IoT (Dash-Cam Insurance):** Senior Software Engineer
+  ~ **09/2021 - 08/2022**
+
+Engineered real-time event pipeline for telemetry and accident detection. Implemented personalised insurance pricing based on driving behaviour. Led a small backend team and mentored junior developers.
+
+**Achievements:**
+- Delivered financial reporting pipeline integrated with Power BI → 40 % faster insights
+- Designed and implemented a scalable microservices architecture for a high-traﬃc application
+
+**Tech stack:** Java, Docker, MQTT, Spring Framework, AWS Cognito, ECS, RDS, S3, SES, SQS, Twilio, Kinesis. ElastiCache, API Gateway
+
+**IoT (Fitness Equipment Telemetry):** Software Engineer
+  ~ **04/2021 - 09/2021**
+
+Built backend handling 1 M + telemetry points per day; cut equipment downtime 30 %
+
+**Achievements:**
+- Delivered financial reporting pipeline integrated with Power BI → 40 % faster insights.
+- Reduced application load time by 15% by optimizing database queries and implementing caching mechanisms.
+
+**Tech stack:** Java, Docker, MQTT, Spring Framework, AWS Cognito, IoT, ECS, RDS, S3, SES, SQS
+
+**Earlier Roles (2019 - 2021)**  include building identity-verification, remote light-management, IoT  tracking, construction-management, on-prem IoT  analytics,  media-player CMS, logistics,  telecom,  and  project-management solutions with Java,  Spring, Docker, Kubernetes, AWS,  Azure and various messaging & IoT protocols.
 
 ## Education
 
-**Lviv Polytechnic National University**,
+**Lviv Polytechnic National University** - Faculty of Computer Science
 
-Bachelor's Degree in Science in Computer Science,
-  ~ 2012 – 2016
+~ **2013 - 2019**
+
+Bachelor's & Master's degree in Computer Science
+
 
 ## Languages
 
-- English – C1
-- Ukrainian – Native
-- [Other Language] – ...
+- English: C1 (Advanced)
+- Ukrainian - Native
 `;
 
 export const DEFAULT_CSS_CONTENT = `
@@ -91,6 +122,10 @@ export const DEFAULT_CSS_CONTENT = `
 .resume-header {
   padding-bottom: 20px;
   text-align: left!important;
+    background-image: url('https://files.slack.com/files-pri/T437TQE4V-F098592PBEH/logo-black-bg-transparent.png?pub_secret=d29c0e8bf7');
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: 120px auto; /* Adjust as needed */
 }
 
 .resume-header h1 {
@@ -100,7 +135,6 @@ export const DEFAULT_CSS_CONTENT = `
 ${PREVIEW_SELECTOR} [data-scope="vue-smart-pages"][data-part="page"] {
   background-color: white;
   color: black;
-  text-align: justify;
   -moz-hyphens: auto;
   -ms-hyphens: auto;
   -webkit-hyphens: auto;
@@ -134,7 +168,7 @@ ${PREVIEW_SELECTOR} h1 {
 }
 
 ${PREVIEW_SELECTOR} h2 {
-  margin-top: 10px!important;
+  margin-top: 20px!important;
   text-transform: uppercase;
 }
 
@@ -158,7 +192,7 @@ ${PREVIEW_SELECTOR} ol {
 }
 
 ${PREVIEW_SELECTOR} ul {
-  list-style-type: circle;
+  list-style-type: disc;
 }
 
 ${PREVIEW_SELECTOR} ol {
@@ -202,6 +236,14 @@ ${PREVIEW_SELECTOR} .resume-header h1 {
   text-align: center;
   line-height: 1;
   margin-bottom: 8px;
+}
+
+${PREVIEW_SELECTOR} .resume-header .resume-header-item {
+  font-weight: normal;
+}
+
+${PREVIEW_SELECTOR} .resume-header .resume-header-item:first-of-type {
+  font-weight: bold;
 }
 
 ${PREVIEW_SELECTOR} .resume-header-item:not(.no-separator)::after {

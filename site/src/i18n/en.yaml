@@ -15,7 +15,7 @@ landing:
   start: Create My Resume
 
 dashboard:
-  my_resumes: My Resumes
+  dashboard: Dashboard
   created: "Created: "
   updated: "Updated: "
   new: New

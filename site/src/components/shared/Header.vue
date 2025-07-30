@@ -14,17 +14,16 @@
 
     <div class="hstack">
       <UiButton
-        v-if="false"
         :as="NuxtLink"
         :to="$nuxt.$localePath('/dashboard')"
         variant="ghost-secondary"
         size="xs"
         class="h-8 gap-x-1"
-        :aria-label="$t('dashboard.my_resumes')"
+        :aria-label="$t('dashboard.dashboard')"
       >
         <span class="i-ep:menu text-lg" />
         <span class="hide-on-mobile text-base">
-          {{ $t("dashboard.my_resumes") }}
+          {{ $t("dashboard.dashboard") }}
         </span>
       </UiButton>
 

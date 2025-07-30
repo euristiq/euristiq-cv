@@ -20,7 +20,7 @@ landing:
       items: Open source, libre y gratuito<br>Información guardada en tu equipo<br>No necesita que te registres<br>No realizamos ningún trackeo ni mostramos publicidad<br>No ads
 
 dashboard:
-  my_resumes: Mis CVs
+  dashboard: Panel
   created: "Creado: "
   updated: "Actualizado: "
   new: Nuevo
