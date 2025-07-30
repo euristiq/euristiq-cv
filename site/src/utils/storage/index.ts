@@ -29,9 +29,12 @@ export class StorageService {
 
   private _createEmptyResume(): DbResumeEmpty {
     const { DEFAULT } = useConstant();
+    const user = useUserStore().user;
 
     return {
-      name: DEFAULT.RESUME_NAME,
+      name: user
+        ? `${user?.given_name}_${user?.family_name}_Resume_${new Date().toISOString()}`
+        : DEFAULT.RESUME_NAME,
       markdown: DEFAULT.MD_CONTENT,
       css: DEFAULT.CSS_CONTENT,
       styles: DEFAULT.STYLES
