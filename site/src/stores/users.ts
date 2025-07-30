@@ -42,6 +42,7 @@ export const useUserStore = defineStore("user", {
     logout() {
       this.user = null;
       this.isAuthenticated = false;
+      this.isAdmin = false;
     }
   },
 
@@ -52,6 +53,10 @@ export const useUserStore = defineStore("user", {
 
     isAuthenticatedUser(state): boolean {
       return state.isAuthenticated;
+    },
+
+    isAdminUser(state): boolean {
+      return state.isAdmin;
     }
   }
 });
