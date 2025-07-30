@@ -20,7 +20,7 @@ landing:
       items: Open source, libre y gratuito<br>Información guardada en tu equipo<br>No necesita que te registres<br>No realizamos ningún trackeo ni mostramos publicidad<br>No ads
 
 dashboard:
-  dashboard: Todos los Curriculums
+  all_resumes: Todos los Curriculums
   created: "Creado: "
   updated: "Actualizado: "
   new: Nuevo
