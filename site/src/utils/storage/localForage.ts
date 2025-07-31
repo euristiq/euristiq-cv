@@ -9,28 +9,10 @@ import type {
 } from "./db";
 import { StorageVersion } from "./utils";
 import { MigrateService, type ValidStorageJsonData } from "./migrate";
+import { notFoundError, storageError, success } from "~/utils/storage/helpers";
 
 export class LocalForageDbService implements DbService {
   private _key = "ohmycv_data";
-
-  private _storageError = () => ({
-    data: null,
-    error: {
-      message: "Error occurred while accessing local storage."
-    }
-  });
-
-  private _notFoundError = (id: number) => ({
-    data: null,
-    error: {
-      message: `Resume ${id} not found.`
-    }
-  });
-
-  private _success = <T>(data: T) => ({
-    data,
-    error: null
-  });
 
   /**
    * Get the storage object. Note that this method will return an empty object
@@ -92,18 +74,17 @@ export class LocalForageDbService implements DbService {
     const storage = await this._storage();
 
     // Check storage
-    if (!storage) return this._storageError();
+    if (!storage) return storageError();
     // Check if resume exists
-    if (!storage[id])
-      return allowNotExist ? this._success(null) : this._notFoundError(id);
+    if (!storage[id]) return allowNotExist ? success(null) : notFoundError(id);
 
-    return this._success(storage);
+    return success(storage);
   }
 
   public async queryAll() {
     const storage = await this._storage();
 
-    if (!storage) return this._storageError();
+    if (!storage) return storageError();
 
     const data = Object.entries(storage)
       .map(([id, data]) => ({ id: Number(id), ...data }))
@@ -113,14 +94,14 @@ export class LocalForageDbService implements DbService {
           b.created_at.localeCompare(a.created_at)
       );
 
-    return this._success(data);
+    return success(data);
   }
 
   public async queryById(id: number) {
     const res = await this._getStorageIfIdExists(id, true);
 
     if (!res.data) return res;
-    else return this._success({ id, ...res.data[id] });
+    else return success({ id, ...res.data[id] });
   }
 
   public async update(data: DbResumeUpdate, newUpdateTime: boolean) {
@@ -137,14 +118,14 @@ export class LocalForageDbService implements DbService {
     storage[id] = updatedResume;
     await this._setItems(storage);
 
-    return this._success({ id, ...updatedResume });
+    return success({ id, ...updatedResume });
   }
 
   public async create(data: DbResumeEmpty | DbResume) {
     const storage = await this._storage();
 
     // Check storage
-    if (!storage) return this._storageError();
+    if (!storage) return storageError();
 
     // Check if resume already exists
     if ("id" in data && storage[data.id]) {
@@ -171,7 +152,7 @@ export class LocalForageDbService implements DbService {
     storage[id] = resume;
     await this._setItems(storage);
 
-    return this._success(createdData);
+    return success(createdData);
   }
 
   public async delete(id: number) {
@@ -184,6 +165,6 @@ export class LocalForageDbService implements DbService {
     delete storage[id];
     await this._setItems(storage);
 
-    return this._success({ id, ...deleted });
+    return success({ id, ...deleted });
   }
 }

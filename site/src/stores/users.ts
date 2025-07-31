@@ -21,6 +21,7 @@ export interface UserInfo {
 interface UserState {
   user: UserInfo | null;
   idToken: string | null;
+  awsUserId: string | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
 }
@@ -29,6 +30,7 @@ export const useUserStore = defineStore("user", {
   state: (): UserState => ({
     user: null,
     idToken: null,
+    awsUserId: null,
     isAuthenticated: false,
     isAdmin: false
   }),
@@ -41,6 +43,10 @@ export const useUserStore = defineStore("user", {
       this.idToken = idToken;
       this.isAuthenticated = true;
       this.isAdmin = adminEmails.includes(userData.email) || false;
+    },
+
+    startAwsSession(awsUserId: string) {
+      this.awsUserId = awsUserId;
     },
 
     logout() {

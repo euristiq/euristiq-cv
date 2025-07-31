@@ -10,9 +10,11 @@ import type {
   DbResumeUpdate,
   DbResumeEmpty
 } from "./db";
+import { S3DbService } from "~/utils/storage/s3Forage";
+import { BackupForageDBService } from "~/utils/storage/backupForage";
 
 const AVAILABLE_SERVICES: Record<string, DbService> = {
-  localForage: new LocalForageDbService()
+  backedUpForage: new BackupForageDBService(new LocalForageDbService(), new S3DbService())
   // TODO: Support PGlite: https://github.com/electric-sql/pglite
 };
 
@@ -217,7 +219,7 @@ export class StorageService {
   }
 }
 
-export const storageService = new StorageService("localForage");
+export const storageService = new StorageService("backedUpForage");
 
 export * from "./db";
 export { IsValid } from "./utils";
