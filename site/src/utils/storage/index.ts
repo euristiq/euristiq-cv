@@ -32,13 +32,19 @@ export class StorageService {
     const user = useUserStore().user;
 
     return {
-      name: user
-        ? `${user?.given_name}_${user?.family_name}_Resume_${new Date().toISOString()}`
-        : DEFAULT.RESUME_NAME,
+      name: user ? this._generateName(user) : DEFAULT.RESUME_NAME,
       markdown: DEFAULT.MD_CONTENT,
       css: DEFAULT.CSS_CONTENT,
       styles: DEFAULT.STYLES
     };
+  }
+
+  private _generateName(user: UserInfo): string {
+    const nameInitial = user.given_name.at(0)?.toLowerCase();
+    const familyName = user.family_name.toLowerCase();
+    const dateTime = new Date().toISOString();
+
+    return `${nameInitial}.${familyName}_cv_${dateTime}`;
   }
 
   public async getResumes() {
