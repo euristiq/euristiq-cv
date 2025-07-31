@@ -20,6 +20,7 @@ export interface UserInfo {
 
 interface UserState {
   user: UserInfo | null;
+  idToken: string | null;
   isAuthenticated: boolean;
   isAdmin: boolean;
 }
@@ -27,20 +28,24 @@ interface UserState {
 export const useUserStore = defineStore("user", {
   state: (): UserState => ({
     user: null,
+    idToken: null,
     isAuthenticated: false,
     isAdmin: false
   }),
 
   actions: {
-    login(userData: UserInfo) {
+    login(idToken: string, decoder: (string: string) => UserInfo) {
       const adminEmails = useRuntimeConfig().public.adminEmails;
+      const userData = decoder(idToken);
       this.user = userData;
+      this.idToken = idToken;
       this.isAuthenticated = true;
       this.isAdmin = adminEmails.includes(userData.email) || false;
     },
 
     logout() {
       this.user = null;
+      this.idToken = null;
       this.isAuthenticated = false;
       this.isAdmin = false;
     }

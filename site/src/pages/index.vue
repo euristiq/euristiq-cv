@@ -29,10 +29,8 @@ const router = useRouter();
 const userStore = useUserStore();
 
 function onGoogleSuccess(response) {
-  const decodedCredential = decodeCredential(response.credential);
-  console.log("decodedCredential", decodedCredential);
-  const userInfo = decodedCredential as UserInfo;
-  userStore.login(userInfo);
+  const idToken = response.credential;
+  userStore.login(idToken, (token) => decodeCredential(token) as UserInfo);
   router.push("/dashboard");
 }
 
