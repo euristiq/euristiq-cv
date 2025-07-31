@@ -14,6 +14,7 @@
 
     <div class="hstack">
       <UiButton
+        v-if="useUserStore().isAuthenticated && $route.path !== '/dashboard'"
         :as="NuxtLink"
         :to="$nuxt.$localePath('/dashboard')"
         variant="ghost-secondary"
