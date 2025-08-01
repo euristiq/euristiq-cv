@@ -9,8 +9,7 @@ import type {
 export class BackupForageDBService implements DbService {
   private localStorage: DbService;
   private backupStorage: DbService;
-  private readonly syncIntervalMs: number;
-  private syncTimerId: ReturnType<typeof setInterval> | null = null;
+  private readonly intervalId: number | null = null;
 
   constructor(
     localStorage: DbService,
@@ -19,20 +18,18 @@ export class BackupForageDBService implements DbService {
   ) {
     this.localStorage = localStorage;
     this.backupStorage = backupStorage;
-    this.syncIntervalMs = syncIntervalMs;
     if (typeof window !== "undefined") {
-      this.syncTimerId = setInterval(() => {
+      this.intervalId = window.setInterval(() => {
         this.sync().catch((err) => {
           console.error("Background sync failed:", err);
         });
-      }, this.syncIntervalMs);
+      }, syncIntervalMs);
     }
   }
 
-  public destroy() {
-    if (this.syncTimerId !== null) {
-      clearInterval(this.syncTimerId);
-      this.syncTimerId = null;
+  beforeDestroy() {
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId);
     }
   }
 
@@ -65,13 +62,16 @@ export class BackupForageDBService implements DbService {
     newUpdateTime: boolean
   ): DbServiceResponse<DbResume> {
     const result = await this.localStorage.update(data, newUpdateTime);
-    await this.backupStorage.update(data, newUpdateTime);
+    if (result.error) return result;
+
+    await this.backupStorage.update(result.data!, newUpdateTime);
 
     return result;
   }
 
   private async sync() {
     try {
+      console.log("Syncing...");
       const localData = await this.localStorage.queryAll();
       if (localData.error) {
         console.error("Failed to local from local:", localData.error);
@@ -83,38 +83,67 @@ export class BackupForageDBService implements DbService {
         return;
       }
 
-      const local = localData.data || [];
-      const backup = backupData.data || [];
+      console.log("Local:", localData.data);
+      console.log("Backup:", backupData.data);
 
-      const map = new Map<number, DbResume>();
-      for (const item of backup) {
-        map.set(item.id, item);
-      }
-
-      // …then merge in local-only when also in backup, choosing the newest
-      for (const item of local) {
-        const existing = map.get(item.id);
-        if (existing) {
-          if (Number(item.updated_at) > Number(existing.updated_at)) {
-            map.set(item.id, item);
-          }
-        }
-        // else: local-only → skip
-      }
-
-      Array.from(map.values()).forEach((item) => {
-        const localRest = this.localStorage.update(item, false);
-        if (localRest.error) {
-          this.localStorage.create(item);
-        }
-      });
-      local.forEach((item) => {
-        if (!map.has(item.id)) {
-          this.localStorage.delete(item.id);
-        }
-      });
+      const mergeHelper = new MergeHelper(localData.data, backupData.data);
+      await mergeHelper.merge();
+      await mergeHelper.upsertLocal(this.localStorage);
+      await mergeHelper.deleteLocal(this.localStorage);
     } catch (e) {
       console.error("Failed to sync from backup:", e);
+    }
+  }
+}
+
+class MergeHelper {
+  private readonly local: DbResume[];
+  private readonly backup: DbResume[];
+  private readonly merged: Map<number, DbResume>;
+
+  constructor(
+    local: DbResume[] | undefined | null,
+    backup: DbResume[] | undefined | null
+  ) {
+    this.local = local || [];
+    this.backup = backup || [];
+    this.merged = new Map<number, DbResume>();
+  }
+
+  async merge() {
+    for (const item of this.backup) {
+      this.merged.set(item.id, item);
+    }
+
+    // …then merge in local-only when also in backup, choosing the newest
+    for (const item of this.local) {
+      const existing = this.merged.get(item.id);
+      if (existing) {
+        if (Number(item.updated_at) > Number(existing.updated_at)) {
+          this.merged.set(item.id, item);
+        }
+      }
+      // else: local-only → skip
+    }
+    console.log("Merged:", this.merged);
+  }
+
+  async upsertLocal(localStorage: DbService) {
+    console.log("Upserting local...");
+    for (const item of Array.from(this.merged.values())) {
+      const localRest = await localStorage.update(item, false);
+      if (localRest.error) {
+        await localStorage.create(item);
+      }
+    }
+  }
+
+  async deleteLocal(localStorage: DbService) {
+    console.log("Deleting local...");
+    for (const item of this.local) {
+      if (!this.merged.has(item.id)) {
+        await localStorage.delete(item.id);
+      }
     }
   }
 }

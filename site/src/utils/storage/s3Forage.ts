@@ -256,10 +256,11 @@ export class S3DbService implements DbService {
     const jsonResponse = await new Response(getResponse.Body as any).json();
     const existing = jsonResponse as DbResume;
 
-    const { id, ...updatedResume } = {
+    const updatedResume = {
       ...existing,
       ...data,
-      updated_at: newUpdateTime ? now().toString() : existing.updated_at
+      updated_at: newUpdateTime ? now().toString() : existing.updated_at,
+      id: existing.id
     };
 
     try {
@@ -278,6 +279,6 @@ export class S3DbService implements DbService {
       throw err;
     }
 
-    return success({ id, ...updatedResume });
+    return success(updatedResume);
   }
 }
