@@ -18,6 +18,9 @@ export class BackupForageDBService implements DbService {
   ) {
     this.localStorage = localStorage;
     this.backupStorage = backupStorage;
+    this.sync().catch((err) => {
+      console.error("Sync failed:", err);
+    });
     if (typeof window !== "undefined") {
       this.intervalId = window.setInterval(() => {
         this.sync().catch((err) => {
