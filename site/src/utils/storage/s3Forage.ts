@@ -2,19 +2,19 @@ import type {
   DbResume,
   DbResumeEmpty,
   DbResumeUpdate,
-  DbService,
-  DbServiceResponse
+  DbServiceResponse,
+  ExtendedDbService
 } from "~/utils/storage/db";
 import {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
   DeleteObjectCommand,
+  GetObjectCommand,
   HeadObjectCommand,
   ListObjectsV2Command,
-  type ListObjectsV2Output
+  type ListObjectsV2Output,
+  PutObjectCommand,
+  S3Client
 } from "@aws-sdk/client-s3";
-import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
+import { GetCallerIdentityCommand, STSClient } from "@aws-sdk/client-sts";
 import { fromWebToken } from "@aws-sdk/credential-provider-web-identity";
 import { now } from "@vueuse/core";
 import {
@@ -25,11 +25,13 @@ import {
   success
 } from "~/utils/storage/helpers";
 
-export class S3DbService implements DbService {
+export class S3DbService implements ExtendedDbService {
   //TODO move to env variables
   private _bucketName = "euristiq-internal-cv-filestore";
   private _region = "us-east-1";
   private _roleArn = "arn:aws:iam::542402751712:role/EuristiqCvGoogleFederatedAccessRole";
+  private _adminRoleArn =
+    "arn:aws:iam::542402751712:role/EuristiqCvGoogleFederatedAdminAccessRole";
   private _keyPrefix = "data";
 
   private _getCredentialsProvider() {
@@ -39,7 +41,7 @@ export class S3DbService implements DbService {
     if (!user || !token) throw new Error("No user or token");
 
     return fromWebToken({
-      roleArn: this._roleArn,
+      roleArn: userStore.isAdmin ? this._adminRoleArn : this._roleArn,
       webIdentityToken: token,
       roleSessionName: user.email
     });
@@ -69,17 +71,26 @@ export class S3DbService implements DbService {
     return identityId;
   }
 
-  private async _getKey(name: string) {
+  private async _getUserBoundKey(name: string) {
     const awsUserId = await this._getUserId();
     return `${this._keyPrefix}/${awsUserId}/${name}.json`;
   }
 
-  private async _getStorageIfIdExists(id: number, allowNotExist: boolean = false) {
+  private async _getStorageIfIdExists(
+    id: number,
+    path?: string,
+    allowNotExist: boolean = false
+  ) {
     const storage = await this._s3Client();
 
     // Check storage
     if (!storage) return storageError();
-    if (!(await this._existsByKey(storage, await this._getKey(id.toString()))))
+    if (
+      !(await this._existsByKey(
+        storage,
+        path ?? (await this._getUserBoundKey(id.toString()))
+      ))
+    )
       return allowNotExist ? success(null) : notFoundError(id);
 
     return success(storage);
@@ -105,11 +116,10 @@ export class S3DbService implements DbService {
 
   public async create(data: DbResumeEmpty | DbResume): DbServiceResponse<DbResume> {
     const s3 = await this._s3Client();
-
     if (!s3) return storageError();
 
-    if ("id" in data) {
-      const existingKey = await this._getKey(data.id.toString());
+    if ("id" in data && "path" in data) {
+      const existingKey = data.path ?? (await this._getUserBoundKey(data.id.toString()));
 
       if (await this._existsByKey(s3, existingKey)) {
         return {
@@ -125,14 +135,15 @@ export class S3DbService implements DbService {
     const userId = this._getUserId();
     if (!userId) return credentialsError();
 
+    const id = _now;
+    const resumeKey = await this._getUserBoundKey(id.toString());
     const resume: DbResume = {
       updated_at: _now.toString(),
       created_at: _now.toString(),
-      // owner_id: user?.sub,
-      id: _now,
+      path: resumeKey,
+      id: id,
       ...data
     };
-    const resumeKey = await this._getKey(resume.id.toString());
 
     await s3.send(
       new PutObjectCommand({
@@ -146,34 +157,45 @@ export class S3DbService implements DbService {
     return success(resume);
   }
 
-  public async delete(id: number): DbServiceResponse<DbResume> {
+  public async deleteById(id: number): DbServiceResponse<DbResume> {
     const res = await this._getStorageIfIdExists(id);
     if (res.error || !res.data) return res;
 
     const existing = await this.queryById(id);
+    if (existing.error) return existing;
+
+    return await this.delete(existing.data!);
+  }
+
+  public async delete(resume: DbResume): DbServiceResponse<DbResume> {
+    const s3 = await this._s3Client();
+    if (!s3) return storageError();
 
     try {
-      await res.data.send(
+      await s3.send(
         new DeleteObjectCommand({
           Bucket: this._bucketName,
-          Key: await this._getKey(id.toString())
+          Key: resume.path
         })
       );
     } catch (err: any) {
       if (err.code === "NotFound" || err.code === "NoSuchKey") {
-        return notFoundError(id);
+        return notFoundError(resume.id);
       }
       throw err;
     }
 
-    return success(existing.data!);
+    return success(resume!);
   }
 
   public async queryAll(): DbServiceResponse<Array<DbResume>> {
+    const userStore = useUserStore();
     const s3 = await this._s3Client();
     if (!s3) return storageError();
 
-    const prefix = `${this._keyPrefix}/${await this._getUserId()}/`;
+    const prefix = userStore.isAdmin
+      ? `${this._keyPrefix}/`
+      : `${this._keyPrefix}/${await this._getUserId()}/`;
     let ContinuationToken: string | undefined = undefined;
     const keys: string[] = [];
 
@@ -191,7 +213,7 @@ export class S3DbService implements DbService {
 
     const resumes: Array<DbResume> = [];
 
-    for (const key of keys) {
+    for (const key of keys.filter((k) => k.endsWith(".json"))) {
       const res = await this._queryByKey(s3, key);
       if (res.data) resumes.push(res.data);
     }
@@ -233,7 +255,7 @@ export class S3DbService implements DbService {
     if (res.error) return res;
 
     const s3 = res.data!;
-    const key = await this._getKey(id.toString());
+    const key = await this._getUserBoundKey(id.toString());
 
     return this._queryByKey(s3, key);
   }
@@ -242,11 +264,11 @@ export class S3DbService implements DbService {
     data: DbResumeUpdate,
     newUpdateTime: boolean
   ): DbServiceResponse<DbResume> {
-    const res = await this._getStorageIfIdExists(data.id);
+    const res = await this._getStorageIfIdExists(data.id, data.path);
     if (res.error || !res.data) return res;
 
     const s3 = res.data!;
-    const key = await this._getKey(data.id.toString());
+    const key = data.path || (await this._getUserBoundKey(data.id.toString()));
     const getResponse = await s3.send(
       new GetObjectCommand({
         Bucket: this._bucketName,

@@ -89,7 +89,7 @@ export class StorageService {
   }
 
   public async deleteResume(id: number) {
-    const { data, error } = await this._db.delete(id);
+    const { data, error } = await this._db.deleteById(id);
 
     if (error) {
       // TODO: Use toast to show error message

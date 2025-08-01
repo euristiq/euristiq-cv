@@ -155,7 +155,7 @@ export class LocalForageDbService implements DbService {
     return success(createdData);
   }
 
-  public async delete(id: number) {
+  public async deleteById(id: number) {
     const res = await this._getStorageIfIdExists(id);
     if (res.error) return res;
 

@@ -1,14 +1,14 @@
 export const storageError = () => ({
   data: null,
   error: {
-    message: "Error occurred while accessing S3 storage."
+    message: "Error occurred while accessing storage."
   }
 });
 
 export const credentialsError = () => ({
   data: null,
   error: {
-    message: "Error occurred while accessing S3 credentials."
+    message: "Error occurred while accessing credentials."
   }
 });
 

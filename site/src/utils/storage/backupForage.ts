@@ -3,17 +3,18 @@ import type {
   DbResumeEmpty,
   DbResumeUpdate,
   DbService,
-  DbServiceResponse
+  DbServiceResponse,
+  ExtendedDbService
 } from "~/utils/storage/db";
 
 export class BackupForageDBService implements DbService {
-  private localStorage: DbService;
-  private backupStorage: DbService;
+  private readonly localStorage: DbService;
+  private backupStorage: ExtendedDbService;
   private readonly intervalId: number | null = null;
 
   constructor(
     localStorage: DbService,
-    backupStorage: DbService,
+    backupStorage: ExtendedDbService,
     syncIntervalMs: number = 20e3
   ) {
     this.localStorage = localStorage;
@@ -37,17 +38,18 @@ export class BackupForageDBService implements DbService {
   }
 
   public async create(data: DbResumeEmpty | DbResume): DbServiceResponse<DbResume> {
-    const result = await this.localStorage.create(data);
+    const result = await this.backupStorage.create(data!);
     if (result.error) return result;
 
-    await this.backupStorage.create(result.data!);
+    await this.localStorage.create(result.data!);
 
     return result;
   }
 
-  public async delete(id: number): DbServiceResponse<DbResume> {
-    const result = await this.localStorage.delete(id);
-    await this.backupStorage.delete(id);
+  public async deleteById(id: number): DbServiceResponse<DbResume> {
+    const result = await this.localStorage.deleteById(id);
+    if (result.error) return result;
+    await this.backupStorage.delete(result.data!);
 
     return result;
   }
@@ -77,17 +79,14 @@ export class BackupForageDBService implements DbService {
       console.log("Syncing...");
       const localData = await this.localStorage.queryAll();
       if (localData.error) {
-        console.error("Failed to local from local:", localData.error);
+        console.error("Failed to load from local:", localData.error);
         return;
       }
       const backupData = await this.backupStorage.queryAll();
       if (backupData.error) {
-        console.error("Failed to local from backup:", backupData.error);
+        console.error("Failed to load from backup:", backupData.error);
         return;
       }
-
-      console.log("Local:", localData.data);
-      console.log("Backup:", backupData.data);
 
       const mergeHelper = new MergeHelper(localData.data, backupData.data);
       await mergeHelper.merge();
@@ -132,7 +131,6 @@ class MergeHelper {
   }
 
   async upsertLocal(localStorage: DbService) {
-    console.log("Upserting local...");
     for (const item of Array.from(this.merged.values())) {
       const localRest = await localStorage.update(item, false);
       if (localRest.error) {
@@ -142,10 +140,9 @@ class MergeHelper {
   }
 
   async deleteLocal(localStorage: DbService) {
-    console.log("Deleting local...");
     for (const item of this.local) {
       if (!this.merged.has(item.id)) {
-        await localStorage.delete(item.id);
+        await localStorage.deleteById(item.id);
       }
     }
   }

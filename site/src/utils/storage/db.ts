@@ -15,6 +15,11 @@ export interface DbResume extends DbResumeEmpty {
   id: number;
 
   /**
+   * The file path of the resume
+   */
+  path: string;
+
+  /**
    * The last update time of the resume
    */
   updated_at: string;
@@ -49,7 +54,11 @@ export interface DbService {
   queryById(id: number): DbServiceResponse<DbResume>;
   update(data: DbResumeUpdate, newUpdateTime: boolean): DbServiceResponse<DbResume>;
   create(data: DbResumeEmpty | DbResume): DbServiceResponse<DbResume>;
-  delete(id: number): DbServiceResponse<DbResume>;
+  deleteById(id: number): DbServiceResponse<DbResume>;
+}
+
+export interface ExtendedDbService extends DbService {
+  delete(resume: DbResume): DbServiceResponse<DbResume>;
 }
 
 export type DbServiceConstructor = new () => DbService;
