@@ -6,6 +6,7 @@ import type {
   DbServiceResponse,
   ExtendedDbService
 } from "~/utils/storage/db";
+import { toast } from "vue-sonner";
 
 export class BackupForageDBService implements DbService {
   private readonly localStorage: DbService;
@@ -74,9 +75,9 @@ export class BackupForageDBService implements DbService {
     return result;
   }
 
+  //TODO move sync logic to StorageService
   private async sync() {
     try {
-      console.log("Syncing...");
       const localData = await this.localStorage.queryAll();
       if (localData.error) {
         console.error("Failed to load from local:", localData.error);
@@ -94,6 +95,9 @@ export class BackupForageDBService implements DbService {
       await mergeHelper.deleteLocal(this.localStorage);
     } catch (e) {
       console.error("Failed to sync from backup:", e);
+      toast.error(
+        "Failed to sync from backup. Please save all unsaved changes and try logging out and in again."
+      );
     }
   }
 }
@@ -127,7 +131,6 @@ class MergeHelper {
       }
       // else: local-only → skip
     }
-    console.log("Merged:", this.merged);
   }
 
   async upsertLocal(localStorage: DbService) {
