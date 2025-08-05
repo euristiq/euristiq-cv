@@ -125,7 +125,7 @@ export const DEFAULT_CSS_CONTENT = `
     background-image: url('https://files.slack.com/files-pri/T437TQE4V-F098592PBEH/logo-black-bg-transparent.png?pub_secret=d29c0e8bf7');
   background-repeat: no-repeat;
   background-position: top right;
-  background-size: 120px auto; /* Adjust as needed */
+  background-size: 90px auto; /* Adjust as needed */
 }
 
 .resume-header h1 {
@@ -243,7 +243,7 @@ ${PREVIEW_SELECTOR} .resume-header .resume-header-item {
 }
 
 ${PREVIEW_SELECTOR} .resume-header .resume-header-item:first-of-type {
-  font-weight: bold;
+  font-weight: normal;
 }
 
 ${PREVIEW_SELECTOR} .resume-header-item:not(.no-separator)::after {
